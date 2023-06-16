@@ -1,0 +1,40 @@
+The moonlight was still there, on the dashboard, though the driver's side window was broken 
+and my wife's purse was gone
+
+The thief, what else did he take? 
+
+Perhaps the childhood of someone
+who wasn't raised well, a young man 
+without the good fortune to receive guidance or to be helped with
+his homework or to be directed towards school
+
+Perhaps the thief took the love too that this young man was meant to receive. 
+
+I think of Hank and Jodi with grandchild who has leukemia.
+
+We drive home with the heat on. 
+The air at night in winter is cold.
+
+What is a purse,
+what is a broken window,
+when compared to these things?
+
+
+
+---------------------
+https://pkg.go.dev/text/template
+
+
+func Must ¶
+func Must(t *Template, err error) *Template
+Must is a helper that wraps a call to a function returning (*Template, error) and panics if the error is non-nil. It is intended for use in variable initializations such as
+
+var t = template.Must(template.New("name").Parse("text"))
+
+
+
+func ParseGlob ¶
+func ParseGlob(pattern string) (*Template, error)
+ParseGlob creates a new Template and parses the template definitions from the files identified by the pattern. The files are matched according to the semantics of filepath.Match, and the pattern must match at least one file. The returned template will have the (base) name and (parsed) contents of the first file matched by the pattern. ParseGlob is equivalent to calling ParseFiles with the list of files matched by the pattern.
+
+When parsing multiple files with the same name in different directories, the last one mentioned will be the one that results.
