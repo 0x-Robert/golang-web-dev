@@ -14,9 +14,11 @@ type user struct {
 	Last     string
 }
 
-var tpl *template.Template
-var dbUsers = map[string]user{}      // user ID, user
-var dbSessions = map[string]string{} // session ID, user ID
+var (
+	tpl        *template.Template
+	dbUsers    = map[string]user{}   // user ID, user
+	dbSessions = map[string]string{} // session ID, user ID
+)
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
@@ -66,7 +68,8 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		}
 
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.NewV4()
+
 		c := &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),

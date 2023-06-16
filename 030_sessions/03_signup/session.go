@@ -25,7 +25,7 @@ func alreadyLoggedIn(req *http.Request) bool {
 	if err != nil {
 		return false
 	}
-	un := dbSessions[c.Value]
+	un := dbSessions[c.Value] // 쿠키 밸류를 키로 한 밸류,
 	_, ok := dbUsers[un]
-	return ok
+	return ok // true or false 반환
 }

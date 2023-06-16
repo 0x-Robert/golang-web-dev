@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+
+	"github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type user struct {
@@ -14,9 +15,11 @@ type user struct {
 	Last     string
 }
 
-var tpl *template.Template
-var dbUsers = map[string]user{}      // user ID, user
-var dbSessions = map[string]string{} // session ID, user ID
+var (
+	tpl        *template.Template
+	dbUsers    = map[string]user{}   // user ID, user
+	dbSessions = map[string]string{} // session ID, user ID
+)
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
@@ -66,7 +69,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.NewV4()
 		c := &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),
@@ -105,13 +108,14 @@ func login(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// does the entered password match the stored password?
+		// 해시로 비밀번호 체크하는 기능
 		err := bcrypt.CompareHashAndPassword(u.Password, []byte(p))
 		if err != nil {
 			http.Error(w, "Username and/or password do not match", http.StatusForbidden)
 			return
 		}
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.NewV4()
 		c := &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),

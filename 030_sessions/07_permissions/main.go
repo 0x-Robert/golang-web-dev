@@ -1,10 +1,12 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
+	"fmt"
 	"html/template"
 	"net/http"
+
+	"github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type user struct {
@@ -15,9 +17,11 @@ type user struct {
 	Role     string
 }
 
-var tpl *template.Template
-var dbUsers = map[string]user{}      // user ID, user
-var dbSessions = map[string]string{} // session ID, user ID
+var (
+	tpl        *template.Template
+	dbUsers    = map[string]user{}   // user ID, user
+	dbSessions = map[string]string{} // session ID, user ID
+)
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
@@ -39,6 +43,7 @@ func index(w http.ResponseWriter, req *http.Request) {
 }
 
 func bar(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("bar", bar)
 	u := getUser(w, req)
 	if !alreadyLoggedIn(req) {
 		http.Redirect(w, req, "/", http.StatusSeeOther)
@@ -71,7 +76,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.NewV4()
 		c := &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),
@@ -116,7 +121,7 @@ func login(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.NewV4()
 		c := &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),

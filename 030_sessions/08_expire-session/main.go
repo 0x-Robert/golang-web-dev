@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
 	"time"
+
+	"github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type user struct {
@@ -21,10 +22,12 @@ type session struct {
 	lastActivity time.Time
 }
 
-var tpl *template.Template
-var dbUsers = map[string]user{}       // user ID, user
-var dbSessions = map[string]session{} // session ID, session
-var dbSessionsCleaned time.Time
+var (
+	tpl               *template.Template
+	dbUsers           = map[string]user{}    // user ID, user
+	dbSessions        = map[string]session{} // session ID, session
+	dbSessionsCleaned time.Time
+)
 
 const sessionLength int = 30
 
@@ -83,7 +86,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.NewV4()
 		c := &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),
@@ -130,7 +133,7 @@ func login(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.NewV4()
 		c := &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),

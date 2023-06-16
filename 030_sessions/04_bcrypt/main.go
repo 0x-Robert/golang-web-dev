@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+
+	"github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type user struct {
@@ -14,9 +15,11 @@ type user struct {
 	Last     string
 }
 
-var tpl *template.Template
-var dbUsers = map[string]user{}      // user ID, user
-var dbSessions = map[string]string{} // session ID, user ID
+var (
+	tpl        *template.Template
+	dbUsers    = map[string]user{}   // user ID, user
+	dbSessions = map[string]string{} // session ID, user ID
+)
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
@@ -68,7 +71,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		}
 
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.NewV4()
 		c := &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),
@@ -77,6 +80,8 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		dbSessions[c.Value] = un
 
 		// store user in dbUsers
+		// cost가 높을 수록 암호알고리즘이 복잡하게 동작해서 보안이 강해짐
+		// 다음 cost는 최소 cost 설정
 		bs, err := bcrypt.GenerateFromPassword([]byte(p), bcrypt.MinCost)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)

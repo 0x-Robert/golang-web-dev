@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/satori/go.uuid"
 	"net/http"
+
+	"github.com/satori/go.uuid"
 )
 
 // For this code to run, you will need this package:
@@ -22,7 +23,7 @@ func index(w http.ResponseWriter, req *http.Request) {
 		cookie = &http.Cookie{
 			Name:  "session",
 			Value: id.String(),
-			// Secure: true,
+			// Secure: true, HTTPS일때만 쿠키를 전송하는 옵션
 			HttpOnly: true,
 			Path:     "/",
 		}
