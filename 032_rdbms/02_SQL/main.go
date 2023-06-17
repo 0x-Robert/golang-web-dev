@@ -3,16 +3,19 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"io"
 	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-var db *sql.DB
-var err error
+var (
+	db  *sql.DB
+	err error
+)
 
 func main() {
-	db, err = sql.Open("mysql", "awsuser:mypassword@tcp(mydbinstance.cakwl95bxza0.us-west-1.rds.amazonaws.com:3306)/test02?charset=utf8")
+	db, err = sql.Open("mysql", "awsuser:mypassword@localhost:3306)/test02?charset=utf8")
 	check(err)
 	defer db.Close()
 
@@ -56,7 +59,6 @@ func amigos(w http.ResponseWriter, req *http.Request) {
 }
 
 func create(w http.ResponseWriter, req *http.Request) {
-
 	stmt, err := db.Prepare(`CREATE TABLE customer (name VARCHAR(20));`)
 	check(err)
 	defer stmt.Close()
@@ -71,7 +73,6 @@ func create(w http.ResponseWriter, req *http.Request) {
 }
 
 func insert(w http.ResponseWriter, req *http.Request) {
-
 	stmt, err := db.Prepare(`INSERT INTO customer VALUES ("James");`)
 	check(err)
 	defer stmt.Close()
@@ -135,7 +136,6 @@ func drop(w http.ResponseWriter, req *http.Request) {
 	check(err)
 
 	fmt.Fprintln(w, "DROPPED TABLE customer")
-
 }
 
 func check(err error) {
